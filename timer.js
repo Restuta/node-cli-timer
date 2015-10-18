@@ -5,10 +5,19 @@ import {} from 'moment-duration-format';
 import notifier from 'node-notifier';
 import nanybar from 'nanybar';
 
+//percent vs color, read as "0-25%, 25%-50%, etc"
+const nanybarProgressMap = {
+  0:    'purple',
+  0.25: 'purple',
+  0.50: 'blue',
+  0.75: 'yellow',
+  0.95: 'orange',
+  1:    'green'
+}
 
-let secondsLeft = moment.duration(10, 'seconds');
-nanybar('yellow');
-
+let secondsLeft = moment.duration(30, 'seconds');
+const initialSeconds = secondsLeft.asSeconds();
+nanybar('purple');
 
 var interval = setInterval(() => {
   if (secondsLeft.asSeconds() < 0) {
@@ -17,7 +26,21 @@ var interval = setInterval(() => {
   } else {
     onEveryTick(secondsLeft);
     secondsLeft.subtract(1, 'second');
+
+    const nearest = toNearestDown({
+      arrayOfNearest: [0, 0.25, 0.5, 0.75, 0.95, 1],
+      number: getPercentOfTimePassed({
+        initialSeconds: initialSeconds,
+        secondsLeft: secondsLeft.asSeconds()
+      })
+    });
+
+    nanybar(nanybarProgressMap[nearest]);
   }
+
+
+  //console.log(nearest);
+  //nanybar(nanybarProgressMap[currentPercent]);
 }, 1000);
 
 
@@ -33,12 +56,34 @@ function onEveryTick(secondsLeft) {
   }
 }
 
+function getPercentOfTimePassed({initialSeconds, secondsLeft}) {
+  const secondsPassed = initialSeconds - secondsLeft;
+  return Number((secondsPassed / initialSeconds).toFixed(2));
+}
+
+/* gets a number and returns it's nearest neighbor from given array
+e.g.  ([0.25, 0.5, 0,75], 0.3) => 0.25
+      ([0.25, 0.5, 0,75], 0.51) => 0.5
+      ([0.25, 0.5, 0,75], 0.74) => 0.5
+*/
+function toNearestDown({arrayOfNearest = [], number = 0}) {
+  const nearest = arrayOfNearest.reduce((prev, curr, index, array) => {
+    //if number is between prev and current - this is our interval, return lower value
+    if (prev <= number && number < curr) {
+      return prev;
+    }
+    return curr;
+  });
+
+  return nearest;
+}
+
 notifier.on('timeout', function (notifierObject, options) {
   //nanybar('exclamation');
 });
 
 notifier.on('click', function (notifierObject, options) {
-  process.exit(0);
+  exitApp();
 })
 
 function onDone() {
@@ -53,8 +98,18 @@ function onDone() {
 
   //so all notifications are safely processed if nobode reacts on a timer within 5 mins exit anyway
   setTimeout(() => {
-    process.exit(0);
+    exitApp();
   }, 60 * 1000 * 5);
 };
+
+
+function exitApp(){
+  nanybar('white');
+
+
+  setTimeout(() => {
+    process.exit(0);
+  }, 1000);
+}
 
 export default {};
