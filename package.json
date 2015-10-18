@@ -1,0 +1,28 @@
+{
+  "name": "node-cli-timer",
+  "version": "0.0.1",
+  "description": "Simple node-cli timer with OSX notifications",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Restuta/node-cli-timer.git"
+  },
+  "keywords": [
+    "timer",
+    "cli-timer",
+    "node-timer",
+    "notifications"
+  ],
+  "author": "Anton Vynogradenko <restuta8@gmail.com> (http://restuta.me)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Restuta/node-cli-timer/issues"
+  },
+  "homepage": "https://github.com/Restuta/node-cli-timer#readme",
+  "dependencies": {
+    "chalk": "^1.1.1"
+  }
+}
