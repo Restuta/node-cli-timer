@@ -1,9 +1,18 @@
 import chalk from 'chalk';
 import {stdout as logLine} from 'single-line-log'; //stands for "single log"
+import clearConsole from 'clear';
 import moment from 'moment';
 import {} from 'moment-duration-format';
 import notifier from 'node-notifier';
 import nanybar from 'nanybar';
+import minimist from 'minimist';
+const argv = (minimist(process.argv.slice(2)));
+
+let initialTimeInMins = 45;
+
+if (Array.isArray(argv._) && Number.isInteger(argv._[0])) {
+  initialTimeInMins = argv._[0];
+}
 
 //percent vs color, read as "0-25%, 25%-50%, etc"
 const nanybarProgressMap = {
@@ -15,32 +24,28 @@ const nanybarProgressMap = {
   1:    'green'
 }
 
-let secondsLeft = moment.duration(30, 'seconds');
-const initialSeconds = secondsLeft.asSeconds();
-nanybar('purple');
+let timeLeft = moment.duration(initialTimeInMins, 'minutes');
+const initialSeconds = timeLeft.asSeconds();
+clearConsole();
 
 var interval = setInterval(() => {
-  if (secondsLeft.asSeconds() < 0) {
+  if (timeLeft.asSeconds() < 0) {
     clearInterval(interval);
     onDone();
   } else {
-    onEveryTick(secondsLeft);
-    secondsLeft.subtract(1, 'second');
+    onEveryTick(timeLeft);
+    timeLeft.subtract(1, 'second');
 
     const nearest = toNearestDown({
       arrayOfNearest: [0, 0.25, 0.5, 0.75, 0.95, 1],
       number: getPercentOfTimePassed({
         initialSeconds: initialSeconds,
-        secondsLeft: secondsLeft.asSeconds()
+        secondsLeft: timeLeft.asSeconds()
       })
     });
 
     nanybar(nanybarProgressMap[nearest]);
   }
-
-
-  //console.log(nearest);
-  //nanybar(nanybarProgressMap[currentPercent]);
 }, 1000);
 
 
@@ -92,7 +97,7 @@ function onDone() {
   notifier.notify({
     title: 'Timer',
     message: 'Done!',
-    sound: true,
+    sound: 'Glass',
     wait: true
   });
 
