@@ -6,7 +6,7 @@ clone this repo (yes, no `npm -g` option yet)
 
 run `npm start <number-of-minutes>` or just `npm start`
 
-_optionally install and run [AnyBar](https://github.com/tonsky/AnyBar)
+_optionally install and run [AnyBar](https://github.com/tonsky/AnyBar)_
 
 ## Typical use-cases
 * pomodoro-like techniques
