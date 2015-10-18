@@ -6,5 +6,5 @@ var interval = setInterval(everySecond, 1000);
 
 
 function everySecond() {
-  //console.log({...arguments});
+  console.log({...arguments});
 }
