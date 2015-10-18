@@ -2,8 +2,7 @@
 Shows time in console and notifies you when done.
 
 ## Usage
-clone this repo (yes, no `npm -g` option yet)
-run `npm start <number-of-minutes>` or just `npm start`
+clone this repo (yes, no `npm -g` option yet)run `npm start <number-of-minutes>` or just `npm start`
 _optionally install and run [AnyBar](https://github.com/tonsky/AnyBar)
 
 ## Typical use-cases
