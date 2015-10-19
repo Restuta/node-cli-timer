@@ -20,7 +20,7 @@ const nanybarProgressMap = {
   0.25: 'purple',
   0.50: 'blue',
   0.75: 'yellow',
-  0.95: 'orange',
+  0.90: 'orange',
   1:    'green'
 }
 
