@@ -25,6 +25,7 @@ const nanybarProgressMap = {
 }
 
 let timeLeft = moment.duration(initialTimeInMins, 'minutes');
+//let timeLeft = moment.duration(initialTimeInMins - 40, 'seconds');
 const initialSeconds = timeLeft.asSeconds();
 clearConsole();
 
@@ -92,7 +93,6 @@ notifier.on('click', function (notifierObject, options) {
 })
 
 function onDone() {
-  nanybar('green');
 
   notifier.notify({
     title: 'Timer',
@@ -100,6 +100,18 @@ function onDone() {
     sound: 'Glass',
     wait: true
   });
+
+  //blink nanybar to drive attention
+  let blinkFlag = false;
+  setInterval(() => {
+    if (blinkFlag) {
+      nanybar('exclamation');
+      blinkFlag = false;
+    } else {
+      nanybar('question');
+      blinkFlag = true;
+    }
+  }, 350);
 
   //so all notifications are safely processed if nobode reacts on a timer within 5 mins exit anyway
   setTimeout(() => {
