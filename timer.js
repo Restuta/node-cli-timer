@@ -34,9 +34,25 @@ var interval = setInterval(() => {
     clearInterval(interval);
     onDone();
   } else {
-    onEveryTick(timeLeft);
+    onEveryTick(timeLeft, initialSeconds);
     timeLeft.subtract(1, 'second');
+  }
+}, 1000);
 
+
+function onEveryTick(secondsLeft, initialSeconds) {
+  var formattedSecondsLeft = secondsLeft.format('mm:ss');
+
+  if (secondsLeft.asSeconds() === 0) {
+    logLine(chalk.green('Done!') + '\n'
+      + formattedSecondsLeft + '\n'
+    );
+  } else {
+    logLine(chalk.yellow('Up and counting...') + '\n'
+      + formattedSecondsLeft + '\n'
+    );
+
+    //update nanybar status based on persentage of time passed
     const nearest = toNearestDown({
       arrayOfNearest: [0, 0.25, 0.5, 0.75, 0.95, 1],
       number: getPercentOfTimePassed({
@@ -45,20 +61,7 @@ var interval = setInterval(() => {
       })
     });
 
-    nanybar(nanybarProgressMap[nearest]);
-  }
-}, 1000);
-
-
-function onEveryTick(secondsLeft) {
-  if (secondsLeft.asSeconds() === 0) {
-    logLine(chalk.green('Done!') + '\n'
-      + secondsLeft.format('mm:ss') + '\n'
-    );
-  } else {
-    logLine(chalk.yellow('Up and counting...') + '\n'
-      + secondsLeft.format('mm:ss') + '\n'
-    );
+    nanybar(nanybarProgressMap[nearest] + ' ' + formattedSecondsLeft);
   }
 }
 
@@ -101,14 +104,18 @@ function onDone() {
     wait: true
   });
 
+  const emojis = [ '🐌','🐍','🐎','🐑','🐒','🐔','🐗','🐘','🐙','🐛','🐜','🐝','🐞','🐟','🐠','🐡','🐢','🐥','🐧','🐨',
+    '🐩','🐫','🐬','🐭','🐮','🐯','🐰','🐱','🐲','🐳','🐴','🐵','🐶','🐷','🐸','🐹','🐺','🐻','🐼'];
+  const randomIndex = Math.floor(Math.random() * emojis.length);
+  const randomEmoji = emojis[randomIndex];
   //blink nanybar to drive attention
   let blinkFlag = false;
   setInterval(() => {
     if (blinkFlag) {
-      nanybar('exclamation');
+      nanybar('exclamation Timer Done! ' + randomEmoji);
       blinkFlag = false;
     } else {
-      nanybar('question');
+      nanybar('white Timer Done! ' + randomEmoji);
       blinkFlag = true;
     }
   }, 350);
@@ -121,7 +128,7 @@ function onDone() {
 
 
 function exitApp(){
-  nanybar('white');
+  nanybar('white Timer Exited 😴');
 
 
   setTimeout(() => {

@@ -6,7 +6,7 @@ clone this repo (yes, no `npm -g` option yet)
 
 run `npm start <number-of-minutes>` or just `npm start`
 
-_optionally install and run [AnyBar](https://github.com/tonsky/AnyBar)_
+_optionally install and run [AnyBar's fork](https://github.com/sfsam/AnyBar)_, fork supports custom colors and text.
 
 ## Typical use-cases
 * pomodoro-like techniques
