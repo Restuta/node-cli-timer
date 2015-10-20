@@ -41,7 +41,7 @@ var interval = setInterval(() => {
 
 
 function onEveryTick(secondsLeft, initialSeconds) {
-  var formattedSecondsLeft = secondsLeft.format('mm:ss');
+  var formattedSecondsLeft = secondsLeft.format('hh:mm:ss');
 
   if (secondsLeft.asSeconds() === 0) {
     logLine(chalk.green('Done!') + '\n'
