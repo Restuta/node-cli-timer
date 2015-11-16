@@ -24,8 +24,8 @@ const nanybarProgressMap = {
   1:    'green'
 }
 
-//let timeLeft = moment.duration(initialTimeInMins, 'minutes');
-let timeLeft = moment.duration(initialTimeInMins - 40, 'seconds');
+let timeLeft = moment.duration(initialTimeInMins, 'minutes');
+//let timeLeft = moment.duration(initialTimeInMins - 40, 'seconds');
 const initialSeconds = timeLeft.asSeconds();
 clearConsole();
 
