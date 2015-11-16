@@ -24,8 +24,8 @@ const nanybarProgressMap = {
   1:    'green'
 }
 
-let timeLeft = moment.duration(initialTimeInMins, 'minutes');
-//let timeLeft = moment.duration(initialTimeInMins - 40, 'seconds');
+//let timeLeft = moment.duration(initialTimeInMins, 'minutes');
+let timeLeft = moment.duration(initialTimeInMins - 40, 'seconds');
 const initialSeconds = timeLeft.asSeconds();
 clearConsole();
 
@@ -104,21 +104,32 @@ function onDone() {
     wait: true
   });
 
-  const emojis = [ '🐌','🐍','🐎','🐑','🐒','🐔','🐗','🐘','🐙','🐛','🐜','🐝','🐞','🐟','🐠','🐡','🐢','🐥','🐧','🐨',
-    '🐩','🐫','🐬','🐭','🐮','🐯','🐰','🐱','🐲','🐳','🐴','🐵','🐶','🐷','🐸','🐹','🐺','🐻','🐼'];
-  const randomIndex = Math.floor(Math.random() * emojis.length);
-  const randomEmoji = emojis[randomIndex];
+  function getRandomEmoji() {
+    const emojis = [ '🐌','🐍','🐎','🐑','🐒','🐔','🐗','🐘','🐙','🐛','🐜','🐝','🐞','🐟','🐠','🐡','🐢','🐥','🐧','🐨',
+      '🐩','🐫','🐬','🐭','🐮','🐯','🐰','🐱','🐲','🐳','🐴','🐵','🐶','🐷','🐸','🐹','🐺','🐻','🐼', '🦁', '🦄', '🐇'];
+    const randomIndex = Math.floor(Math.random() * emojis.length);
+
+    return emojis[randomIndex]
+  }
+
   //blink nanybar to drive attention
-  let blinkFlag = false;
+  let blinkFlag = 0;
+  //yes we want you to notice that timer is done
+  let annoyinglyLongListOfEmoji = [getRandomEmoji()];
+
   setInterval(() => {
-    if (blinkFlag) {
-      nanybar('exclamation Timer Done! ' + randomEmoji);
-      blinkFlag = false;
+    if (blinkFlag % 5 === 0) {
+      nanybar('exclamation Timer Done! ' + getRandomEmoji());
+      annoyinglyLongListOfEmoji = [];
+      blinkFlag++;
     } else {
-      nanybar('white Timer Done! ' + randomEmoji);
-      blinkFlag = true;
+      annoyinglyLongListOfEmoji.push(getRandomEmoji());
+      nanybar('white Timer Done! ' + annoyinglyLongListOfEmoji.join(' '));
+      blinkFlag++;
     }
-  }, 350);
+
+  }, 1000);
+
 
   //so all notifications are safely processed if nobode reacts on a timer within 5 mins exit anyway
   setTimeout(() => {
